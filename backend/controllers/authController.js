@@ -22,3 +22,18 @@ exports.login = (req, res) => {
         }
     });
 };
+
+exports.register = (req, res) => {
+    const { name, email, password, type } = req.body;
+    
+    if (!name || !email || !password || !type) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+    db.query('INSERT INTO Patients (Name, Email, Password, Type) VALUES (?, ?, ?, ?)', [name, email, password, type], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error registering user.' });
+        }
+        return res.status(201).json({ message: 'Registration successful' });
+    });
+}
+
